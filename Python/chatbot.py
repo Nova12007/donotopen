@@ -1,13 +1,22 @@
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
+import sys
+print(sys.executable)
 
-load_dotenv()
+import ollama
 
-client = OpenAI(api_key=os.getenv("open_ai_key"))
-print(os.getenv("OPENAI_API_KEY"))
-response = client.responses.create(
-    model="gpt-5.5",
-    input="Write a short bedtime story about a unicorn."
+import requests
+
+r = requests.get("http://localhost:11434/api/tags")
+print(r.json())
+
+
+response = ollama.chat(
+    model='qwen2.5-coder:7b',
+    messages=[
+        {
+            'role': 'user',
+            'content': 'Explain how AI works in 200 words'
+        }
+    ]
 )
-print(response.text)
+
+print(response['message']['content'])
